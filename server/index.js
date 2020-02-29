@@ -31,9 +31,14 @@ app.get('/', (req,res) =>{
         message: 'Welcome',
         endpoints:[
 			'/api/deals',
+			'/api/deal/:id',
+			'/api/deals/stats',
+			'/api/add-deal',
+			'/api/update-deal'
 		]
     })
 })
+
 app.use('/api', routerApi);
 
 app.set('port', process.env.PORT || 3001);

@@ -3,7 +3,7 @@ var Schema = mongoose.Schema;
 
 //deal schema
 export const dealSchema = new Schema({
-    _id: Schema.Types.ObjectId,
+    _id: {type : Schema.ObjectId, auto: true},
     title: String,
     amountRequired: Number
 });
