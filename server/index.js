@@ -34,7 +34,8 @@ app.get('/', (req,res) =>{
 			'/api/deal/:id',
 			'/api/deals/stats',
 			'/api/add-deal',
-			'/api/update-deal'
+			'/api/update-deal',
+			'/api/delete-deal'
 		]
     })
 })

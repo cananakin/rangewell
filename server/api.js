@@ -49,15 +49,6 @@ routerApi.get("/deals/stats", async (req, res) => {
     });
 });
 
-// update
-routerApi.post("/update-deal/:id", async (req, res) => {
-    await db.dealsCollection.findOneAndUpdate(
-        req.params.id, req.body
-    ).exec(function(err, result) {
-        res.send(result);
-    });  
-});
-
 // new add
 routerApi.post("/add-deal", async (req, res) => {
     const newDeal = new db.dealsCollection();
@@ -69,6 +60,23 @@ routerApi.post("/add-deal", async (req, res) => {
       });
 });
 
+// update
+routerApi.post("/update-deal/:id", async (req, res) => {
+    await db.dealsCollection.findOneAndUpdate(
+        req.params.id, req.body
+    ).exec(function(err, result) {
+        res.send(result);
+    });  
+});
+
+// delete
+routerApi.post("/delete-deal/:id", async (req, res) => {
+    await db.dealsCollection.findOneAndDelete(
+        {_id : req.params.id}
+    ).exec(function(err, result) {
+        res.send(result);
+    });  
+});
 
 
 export default routerApi;

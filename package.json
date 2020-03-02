@@ -10,8 +10,12 @@
     "bootstrap": "^4.4.1",
     "cors": "^2.8.5",
     "express": "^4.16.4",
+    "husky": "^4.2.3",
     "isomorphic-fetch": "^2.2.1",
+    "lint-staged": "^10.0.8",
     "mongoose": "^5.4.19",
+    "prettier": "^1.19.1",
+    "prop-types": "^15.7.2",
     "react": "^16.8.4",
     "react-bootstrap": "^1.0.0-beta.16",
     "react-dom": "^16.8.4",
@@ -38,5 +42,19 @@
   ],
   "devDependencies": {
     "babel-cli": "^6.26.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
+      "prettier --single-quote --write",
+      "git add"
+    ]
+  },
+  "prettier": {
+    "singleQuote": true
   }
 }
