@@ -5,7 +5,7 @@ var Schema = mongoose.Schema;
 export const dealSchema = new Schema({
     _id: {type : Schema.ObjectId, auto: true},
     title: String,
-    amountRequired: Number
-});
+    amountRequired: Number,
+},{ timestamps: true });
  
 export const dealsCollection = mongoose.model('deals', dealSchema)
