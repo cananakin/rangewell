@@ -1,4 +1,10 @@
-import { ADD_DEAL, RENDER_DEAL_LIST, EDIT_DEAL, DELETE_DEAL } from '../actions';
+import {
+  ADD_DEAL,
+  RENDER_DEAL_LIST,
+  EDIT_DEAL,
+  DELETE_DEAL,
+  FIND_DEAL_ID
+} from '../actions';
 
 const initialState = {
   deals: [],
@@ -28,6 +34,12 @@ export default function dealApp(state = initialState, action) {
         ...state,
         deals: action.deals,
         stats: action.stats
+      };
+    case FIND_DEAL_ID:
+      console.log(action);
+      return {
+        ...state,
+        deals: action.deals
       };
     default:
       return state;

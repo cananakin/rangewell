@@ -11,17 +11,22 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      formEdit: false,
+      editForm: false,
       deal: null
     };
   }
 
   render() {
     const editData = data => {
-      console.log(data);
       this.setState({
-        formEdit: true,
+        editForm: true,
         deal: data
+      });
+    };
+    const resetEdit = () => {
+      this.setState({
+        editForm: false,
+        deal: null
       });
     };
     return (
@@ -31,9 +36,12 @@ class App extends Component {
             <h1>Deals</h1> <DealStatsContainer />
             <hr />
           </Col>
-
           <Col sm={12}>
-            <DealForm formEdit={this.state.formEdit} deal={this.state.deal} />
+            <DealForm
+              editFormClose={resetEdit}
+              editForm={this.state.editForm}
+              deal={this.state.deal}
+            />
             <DealListContainer edit={editData} />
           </Col>
         </Row>

@@ -1,50 +1,35 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { addDealAction } from '../actions';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import InputGroup from 'react-bootstrap/InputGroup';
+import { addDealAction, editDealAction } from '../actions';
 
-let DealForm = ({ editForm, deal, dispatch }) => {
-  let title;
-  let amountRequired;
-  console.log(deal);
+import Form from 'react-bootstrap/Form';
+
+import AddForm from './AddForm';
+import EditForm from './EditForm';
+
+let DealForm = (props, { editForm, deal, dispatch }) => {
+  const onSubmitForm = (value, type, id) => {
+    type === 'add'
+      ? props.dispatch(addDealAction(value))
+      : props.dispatch(editDealAction(value, id));
+  };
+  const onCloseEdit = () => {
+    props.editFormClose();
+  };
+  console.log(props.editForm);
   return (
-    <Form
-      onSubmit={e => {
-        e.preventDefault();
-        if (!title.value.trim() || !amountRequired.value.trim()) {
-          return;
-        }
-        const value = {
-          title: title.value,
-          amountRequired: amountRequired.value
-        };
-        dispatch(addDealAction(value));
-        title.value = '';
-        amountRequired.value = '';
-      }}
-    >
+    <Form>
       <Form.Group controlId="formBasicEmail">
-        <InputGroup>
-          <Form.Control
-            type="text"
-            placeholder="Enter an title"
-            ref={node => {
-              title = node;
-            }}
+        {props.editForm ? (
+          <EditForm
+            id={props.deal._id}
+            deal={props.deal}
+            onSubmit={onSubmitForm}
+            onClose={onCloseEdit}
           />
-          <Form.Control
-            type="text"
-            placeholder="Enter an amount required"
-            ref={node => {
-              amountRequired = node;
-            }}
-          />
-          <InputGroup.Append>
-            <Button type="submit">Add Deal</Button>
-          </InputGroup.Append>
-        </InputGroup>
+        ) : (
+          <AddForm onSubmit={onSubmitForm} />
+        )}
       </Form.Group>
     </Form>
   );

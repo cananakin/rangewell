@@ -10,6 +10,7 @@ routerApi.get("/deals", async (req, res) => {
     let query = db.dealsCollection.find();
     if(req.query.title !== undefined && req.query.title !== null){
         query = db.dealsCollection.find({
+            //$or:[ { title : { $regex: req.query.title, $options : "i" }}, {'_id':req.query.title } ]
             title: { "$regex": req.query.title, "$options": "i" }
         });
     }
@@ -62,8 +63,10 @@ routerApi.post("/add-deal", async (req, res) => {
 
 // update
 routerApi.post("/update-deal/:id", async (req, res) => {
+    console.log(req.params.id);
+    console.log(req.body);
     await db.dealsCollection.findOneAndUpdate(
-        req.params.id, req.body
+        {_id : req.params.id}, req.body
     ).exec(function(err, result) {
         res.send(result);
     });  

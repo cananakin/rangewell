@@ -4,7 +4,8 @@ import {
   RENDER_DEAL_LIST,
   ADD_DEAL,
   EDIT_DEAL,
-  DELETE_DEAL
+  DELETE_DEAL,
+  FIND_DEAL_ID
 } from '../actions';
 import * as Api from '../api';
 
@@ -24,6 +25,19 @@ export function* loadDealList() {
   yield takeEvery(LOAD_DEAL_LIST, fetchDealList);
 }
 
+export function* fetchDealId(payload) {
+  const endpoint = `http://localhost:3001/api/deals?title=${payload.payload.title}`;
+  const response = yield call(fetch, endpoint);
+  const data = yield response.json();
+  console.log(data);
+
+  //yield put({ type: RENDER_DEAL_LIST, deals: data });
+}
+
+export function* findDealId() {
+  yield takeEvery(FIND_DEAL_ID, fetchDealId);
+}
+
 function* AddDealAction(payload) {
   try {
     yield call(Api.add, payload.payload);
@@ -37,15 +51,12 @@ export function* AddDeal() {
   yield takeEvery(ADD_DEAL, AddDealAction);
 }
 
-function* EditDealAction(payload, id) {
+function* EditDealAction(payload) {
   try {
-    const { response } = yield call(Api.edit, payload.payload, payload.id);
-    if (response) {
-      yield put({ type: 'LOAD_DEAL_LIST', message: 'Success' });
-    } else {
-      //console.log(error);
-      //yield put({type:DEAL_MESSAGE,message:'Fail' + error.response.data.error,hasErrored:true})
-    }
+    //const { response } = yield call(Api.edit, payload.payload, payload.id);
+    yield call(Api.edit, payload.payload, payload.id);
+    console.log(payload.id);
+    yield put({ type: 'LOAD_DEAL_LIST', message: 'Success' });
   } catch (e) {
     //yield put({type:DEAL_MESSAGE,message:'Fail',hasErrored:true, isLoading:false})
   }
@@ -56,7 +67,6 @@ export function* EditDeal() {
 }
 
 function* DeleteDealAction(payload) {
-  console.log(payload);
   try {
     yield call(Api.remove, payload.id);
     yield put({ type: 'LOAD_DEAL_LIST', message: 'Success' });
@@ -70,5 +80,11 @@ export function* DeleteDeal() {
 }
 
 export default function* rootSaga() {
-  yield all([loadDealList(), AddDeal(), EditDeal(), DeleteDeal()]);
+  yield all([
+    loadDealList(),
+    findDealId(),
+    AddDeal(),
+    EditDeal(),
+    DeleteDeal()
+  ]);
 }
