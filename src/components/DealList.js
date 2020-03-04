@@ -16,7 +16,7 @@ const DealList = props => {
     <Table striped bordered hover>
       <thead>
         <tr>
-          <th>#</th>
+          <th>#ID</th>
           <th>Title</th>
           <th>Amount Required </th>
           <th>Created At</th>

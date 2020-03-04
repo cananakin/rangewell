@@ -1,11 +1,10 @@
-import { all, call, put, takeEvery } from 'redux-saga/effects';
+import { all, call, put, takeEvery, fork } from 'redux-saga/effects';
 import {
   LOAD_DEAL_LIST,
   RENDER_DEAL_LIST,
   ADD_DEAL,
   EDIT_DEAL,
-  DELETE_DEAL,
-  FIND_DEAL_ID
+  DELETE_DEAL
 } from '../actions';
 import * as Api from '../api';
 
@@ -13,7 +12,6 @@ export function* fetchDealList() {
   const endpoint = `http://localhost:3001/api/deals`;
   const response = yield call(fetch, endpoint);
   const data = yield response.json();
-
   // stats
   const stats_endpoint = `http://localhost:3001/api/deals/stats`;
   const stats_response = yield call(fetch, stats_endpoint);
@@ -23,19 +21,6 @@ export function* fetchDealList() {
 
 export function* loadDealList() {
   yield takeEvery(LOAD_DEAL_LIST, fetchDealList);
-}
-
-export function* fetchDealId(payload) {
-  const endpoint = `http://localhost:3001/api/deals?title=${payload.payload.title}`;
-  const response = yield call(fetch, endpoint);
-  const data = yield response.json();
-  console.log(data);
-
-  //yield put({ type: RENDER_DEAL_LIST, deals: data });
-}
-
-export function* findDealId() {
-  yield takeEvery(FIND_DEAL_ID, fetchDealId);
 }
 
 function* AddDealAction(payload) {
@@ -53,11 +38,15 @@ export function* AddDeal() {
 
 function* EditDealAction(payload) {
   try {
-    //const { response } = yield call(Api.edit, payload.payload, payload.id);
-    yield call(Api.edit, payload.payload, payload.id);
-    console.log(payload.id);
-    yield put({ type: 'LOAD_DEAL_LIST', message: 'Success' });
+    const response = yield call(Api.edit, payload.payload, payload.id);
+    if (response) {
+      yield call(Api.edit, payload.payload, payload.id);
+      yield put({ type: 'LOAD_DEAL_LIST', message: 'Success' });
+    } else {
+      console.log('error edit saga');
+    }
   } catch (e) {
+    console.log('error edit saga');
     //yield put({type:DEAL_MESSAGE,message:'Fail',hasErrored:true, isLoading:false})
   }
 }
@@ -80,11 +69,5 @@ export function* DeleteDeal() {
 }
 
 export default function* rootSaga() {
-  yield all([
-    loadDealList(),
-    findDealId(),
-    AddDeal(),
-    EditDeal(),
-    DeleteDeal()
-  ]);
+  yield all([loadDealList(), AddDeal(), fork(EditDeal), DeleteDeal()]);
 }

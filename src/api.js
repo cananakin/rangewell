@@ -13,7 +13,7 @@ const add = model => {
     .catch(error => ({ error }));
 };
 const edit = (model, id) => {
-  fetch(`http://localhost:3001/api/update-deal/${id}`, {
+  return fetch(`http://localhost:3001/api/update-deal/${id}`, {
     method: 'POST',
     headers: {
       Accept: 'application/json',
@@ -25,7 +25,7 @@ const edit = (model, id) => {
     .catch(error => ({ error }));
 };
 const remove = id => {
-  fetch(`http://localhost:3001/api/delete-deal/${id}`, {
+  return fetch(`http://localhost:3001/api/delete-deal/${id}`, {
     method: 'POST',
     headers: {
       Accept: 'application/json',

@@ -7,16 +7,18 @@ import Form from 'react-bootstrap/Form';
 import AddForm from './AddForm';
 import EditForm from './EditForm';
 
-let DealForm = (props, { editForm, deal, dispatch }) => {
+let DealForm = props => {
   const onSubmitForm = (value, type, id) => {
     type === 'add'
       ? props.dispatch(addDealAction(value))
       : props.dispatch(editDealAction(value, id));
+    if (type === 'edit') {
+      onCloseEdit();
+    }
   };
   const onCloseEdit = () => {
     props.editFormClose();
   };
-  console.log(props.editForm);
   return (
     <Form>
       <Form.Group controlId="formBasicEmail">

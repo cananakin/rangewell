@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
-import InputGroup from 'react-bootstrap/InputGroup';
+import { Form, Button, InputGroup, Row, Col } from 'react-bootstrap';
 
 import { findDealId } from '../actions';
 
@@ -13,15 +11,12 @@ export class Filter extends Component {
     this.state = {};
   }
 
-  componentDidMount() {}
-
   render() {
     let titleFilter;
     //let createdAtFilter;
 
     const onSubmit = e => {
       e.preventDefault();
-      console.log(titleFilter.value.trim());
       const filter = titleFilter.value.trim() === '' ? false : true;
       const value = { title: titleFilter.value };
       return fetch(`http://localhost:3001/api/deals?title=${value.title}`)
@@ -30,31 +25,31 @@ export class Filter extends Component {
           this.props.filterDeals(response, filter);
         })
         .catch(error => ({ error }));
-
-      //this.props.findDealId(value)
-
-      //this.props.onSubmit(value, 'add',null)
     };
     return (
-      <Form>
-        <Form.Group controlId="formBasicEmail">
-          <InputGroup>
-            <Form.Control
-              type="text"
-              placeholder="Title"
-              ref={node => {
-                titleFilter = node;
-              }}
-            />
+      <Row>
+        <Col sm={12} md={5}>
+          <Form>
+            <Form.Group controlId="formBasicEmail">
+              <InputGroup>
+                <Form.Control
+                  type="text"
+                  placeholder="Search Title or Id"
+                  ref={node => {
+                    titleFilter = node;
+                  }}
+                />
 
-            <InputGroup.Append>
-              <Button type="submit" onClick={onSubmit}>
-                Search
-              </Button>
-            </InputGroup.Append>
-          </InputGroup>
-        </Form.Group>
-      </Form>
+                <InputGroup.Append>
+                  <Button type="submit" onClick={onSubmit}>
+                    Search
+                  </Button>
+                </InputGroup.Append>
+              </InputGroup>
+            </Form.Group>
+          </Form>
+        </Col>
+      </Row>
     );
   }
 }

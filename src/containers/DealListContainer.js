@@ -21,7 +21,6 @@ export class DealListContainer extends Component {
       this.props.edit(data);
     };
     const filterData = (deals, filter) => {
-      console.log(deals);
       if (filter) {
         this.setState({
           filter: true,
